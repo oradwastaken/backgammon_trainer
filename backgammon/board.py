@@ -61,5 +61,5 @@ class Board:
 
     def get_pipcount(self) -> Pipcount:
         X_count = sum(point.number * point.num_checkers for point in self.points if point.color == Team.X)
-        O_count = sum(point.number * point.num_checkers for point in self.points if point.color == Team.O)
+        O_count = sum((25 - point.number) * point.num_checkers for point in self.points if point.color == Team.O)
         return Pipcount(X=X_count, O=O_count)
