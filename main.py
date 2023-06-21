@@ -1,11 +1,12 @@
-from backgammon.board import Board
+from backgammon.board import Board, print_board
+
 
 def main():
     board = Board()
     board.setup()
-    board.display()
-    print(board.get_pipcount())
+
+    print_board(board)
+
 
 if __name__ == '__main__':
     main()
-
