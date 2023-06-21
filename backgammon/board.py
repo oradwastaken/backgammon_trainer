@@ -1,3 +1,4 @@
+import random
 from collections import defaultdict
 from dataclasses import dataclass
 from enum import StrEnum
@@ -56,6 +57,39 @@ class Board:
 
         self.points[19].num_checkers = 5
         self.points[19].color = Team.O
+
+    def random(self):
+        touched_points = []
+
+        remaining_checkers = 15
+        while remaining_checkers > 0:
+            point_num = random.randint(0, 24)
+            if point_num in touched_points:
+                continue
+
+            touched_points.append(point_num)
+            num_checkers = random.randint(1, 6)
+            if num_checkers > remaining_checkers:
+                num_checkers = remaining_checkers
+            remaining_checkers = remaining_checkers - num_checkers
+
+            self.points[point_num].num_checkers = num_checkers
+            self.points[point_num].color = Team.X
+
+        remaining_checkers = 15
+        while remaining_checkers > 0:
+            point_num = random.randint(0, 24)
+            if point_num in touched_points:
+                continue
+
+            touched_points.append(point_num)
+            num_checkers = random.randint(1, 6)
+            if num_checkers > remaining_checkers:
+                num_checkers = remaining_checkers
+            remaining_checkers = remaining_checkers - num_checkers
+
+            self.points[point_num].num_checkers = num_checkers
+            self.points[point_num].color = Team.O
 
     @property
     def points_with_checkers(self) -> list[Point]:
