@@ -1,4 +1,4 @@
-from games import point_number_game
+from backgammon.games import point_number_game
 
 
 def main():
