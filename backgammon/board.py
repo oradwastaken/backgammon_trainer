@@ -32,6 +32,11 @@ class Board:
     def __init__(self):
         self.points = [Point(i) for i in range(25)]
 
+    def reset(self):
+        for point in self.points:
+            point.num_checkers = 0
+            point.color = None
+
     def setup(self) -> None:
         """Sets up the standard initial backgammon board."""
         self.points[24].num_checkers = 2
@@ -58,7 +63,12 @@ class Board:
         self.points[19].num_checkers = 5
         self.points[19].color = Team.O
 
-    def random(self):
+    def random_point(self):
+        point_num = random.randint(1, 24)
+        self.points[point_num].num_checkers = 1
+        self.points[point_num].color = Team.X
+
+    def random_board(self):
         touched_points = []
 
         remaining_checkers = 15

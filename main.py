@@ -1,12 +1,8 @@
-from backgammon.board import Board, print_board
+from games import point_number_game
 
 
 def main():
-    board = Board()
-    board.random()
-
-    print_board(board)
-    print(board.get_pipcount())
+    point_number_game()
 
 
 if __name__ == '__main__':
