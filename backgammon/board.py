@@ -35,7 +35,7 @@ class Board:
         self.points = [Point(i) for i in range(26)]
         self.bear_off_left = bear_off_left
 
-    def reset(self):
+    def reset(self) -> None:
         for point in self.points:
             point.num_checkers = 0
             point.color = None
@@ -66,13 +66,13 @@ class Board:
         self.points[19].num_checkers = 5
         self.points[19].color = Team.O
 
-    def random_point(self):
+    def random_point(self) -> None:
         self.reset()
         point_num = random.randint(1, 24)
         self.points[point_num].num_checkers = 1
         self.points[point_num].color = Team.X
 
-    def random_board(self, bar: bool = False, max_checkers: int = 5):
+    def random_board(self, bar: bool = False, max_checkers: int = 5) -> None:
         self.reset()
         touched_points = []
 
@@ -102,32 +102,28 @@ class Board:
     @property
     def pipcount(self) -> PipCount:
         """Calculates and returns the pip count for each player."""
-        X_count = sum(point.number * point.num_checkers for point in self.points if point.color == Team.X)
-        O_count = sum((25 - point.number) * point.num_checkers for point in self.points if point.color == Team.O)
+        X_count = sum(point.number * point.num_checkers
+                      for point in self.points if point.color == Team.X)
+        O_count = sum((25 - point.number) * point.num_checkers
+                      for point in self.points if point.color == Team.O)
         return PipCount(X=X_count, O=O_count)
 
-    def move_checkers(self, from_pt: int, to_pt: int, num_checkers: int = 1):
+    def move_checkers(self, from_pt: int, to_pt: int, num_checkers: int = 1) -> None:
         from_pt = self.points[from_pt]
         to_pt = self.points[to_pt]
         if num_checkers > from_pt.num_checkers:
-            raise InvalidMove(f"Not enough checkers on point ({from_pt.num_checkers}) to move {num_checkers} checkers")
+            raise InvalidMove(f"Not enough checkers on point ({from_pt.num_checkers}) "
+                              f"to move {num_checkers} checkers")
 
         if from_pt.color != to_pt.color and to_pt.color is not None:
-            if to_pt.num_checkers > 1:
-                raise InvalidMove(
-                    f"Opponent is in control of the {to_pt.number}-point with {to_pt.num_checkers} checkers"
-                    )
-            else:
-                self.hit_checker(to_pt.number)
+            self.hit_checker(to_pt.number)
 
-        for _ in range(num_checkers):
-            to_pt.num_checkers += 1
-            from_pt.num_checkers -= 1
+        to_pt.num_checkers += num_checkers
+        from_pt.num_checkers -= num_checkers
         to_pt.color = from_pt.color
 
         if from_pt.num_checkers == 0:
             from_pt.color = None
-
 
     def hit_checker(self, pt: int) -> None:
         point = self.points[pt]

@@ -19,7 +19,7 @@ def main():
     board.move_checkers(24, 13)
     print_board(board)
 
-    print('Moving 12/14, 1217')
+    print('Moving 12/14, 12/17')
     board.move_checkers(12, 14)
     board.move_checkers(12, 17)
     print_board(board)

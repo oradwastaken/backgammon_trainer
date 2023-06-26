@@ -12,20 +12,22 @@ def point_number_game():
     while (total_rounds := read_int('How many rounds would you like to play?\n  ')) < 0:
         print('Please provide a positive number.')
 
-    for round_num in range(1, total_rounds+1):
+    for round_num in range(1, total_rounds + 1):
         board.reset()
         board.random_point()
+        correct_answer = board.points_with_checkers[0].number
+
         print_board(board, show_points=False)
         start_time = perf_counter()
         guess = read_int('What point is the checker on?\n  ')
         total_time += perf_counter() - start_time
 
-        if guess == board.pipcount.X:
+        if guess == correct_answer:
             num_wins += 1
             print('Right! 😎')
         else:
             print('Oh no! 😢')
-            print(f"The correct answer was {board.pipcount.X}")
+            print(f"The correct answer was {correct_answer}")
         print(f'\nScore: {num_wins}/{round_num}')
         wait(3)
 
