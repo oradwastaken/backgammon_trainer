@@ -26,11 +26,13 @@ class Point:
 
 
 class Board:
-    """A backgammon board, comprised of 24 points and the bar point (0).
-    The X team represents the user, and the O team represents the opponent."""
+    """A backgammon board, comprised of 24 points and the bar point for X (25) and
+    the bar point for O (0). The X team represents the user, and the O team represents
+    the opponent."""
 
-    def __init__(self):
-        self.points = [Point(i) for i in range(25)]
+    def __init__(self, bear_off_left: bool = True):
+        self.points = [Point(i) for i in range(26)]
+        self.bear_off_left = bear_off_left
 
     def reset(self):
         for point in self.points:
@@ -64,6 +66,7 @@ class Board:
         self.points[19].color = Team.O
 
     def random_point(self):
+        self.reset()
         point_num = random.randint(1, 24)
         self.points[point_num].num_checkers = 1
         self.points[point_num].color = Team.X
@@ -105,7 +108,8 @@ class Board:
     def points_with_checkers(self) -> list[Point]:
         return [point for point in self.points if point.num_checkers > 0]
 
-    def get_pipcount(self) -> PipCount:
+    @property
+    def pipcount(self) -> PipCount:
         """Calculates and returns the pip count for each player."""
         X_count = sum(point.number * point.num_checkers for point in self.points if point.color == Team.X)
         O_count = sum((25 - point.number) * point.num_checkers for point in self.points if point.color == Team.O)
