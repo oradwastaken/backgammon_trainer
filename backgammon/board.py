@@ -85,8 +85,8 @@ class Board:
                     point_num = random.randint(1, 25)
                 if point_num in touched_points:
                     continue
-
                 touched_points.append(point_num)
+
                 num_checkers = random.randint(1, max_checkers)
                 if num_checkers > remaining_checkers:
                     num_checkers = remaining_checkers

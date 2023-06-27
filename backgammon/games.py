@@ -4,13 +4,14 @@ from backgammon.board import Board
 from backgammon.shell import print_board, read_int, wait
 
 
-def point_number_game():
-    board = Board()
+def point_number_game(board:Board):
+
 
     num_wins = 0
     total_time = 0
-    while (total_rounds := read_int('How many rounds would you like to play?\n  ')) < 0:
-        print('Please provide a positive number.')
+    total_rounds = 10
+    # while (total_rounds := read_int('How many rounds would you like to play?\n  ')) < 0:
+    #     print('Please provide a positive number.')
 
     for round_num in range(1, total_rounds + 1):
         board.reset()
@@ -35,6 +36,8 @@ def point_number_game():
     print(f'Total time: {total_time:.1f} s')
     print(f'Average time: {total_time / total_rounds:.1f} s/round')
 
+
+games = {1: point_number_game}
 
 if __name__ == '__main__':
     point_number_game()
