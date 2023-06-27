@@ -49,7 +49,7 @@ def select_game() -> int:
 def bear_off_question() -> bool:
     prompt = 'What direction would you like to bear off?\n'
     prompt += '1. Left\n2. Right\n'
-    direction = read_choice(prompt)
+    direction = read_choice(prompt, [1, 2])
     return True if direction == 1 else False
 
 

@@ -8,12 +8,17 @@ def main():
 
     board = Board(bear_off_left=bear_off_question())
 
+    # Let's play games!
     game_choice = select_game()
     games[game_choice](board)
 
+    # An example of saving/loading a board:
+    # board.setup()
+    # board.save('temp.json')
+    # board.load('temp.json')
+    # print_board(board)
+
     # # Here's examples of how to manipulate the board:
-    # board = Board(bear_off_left=True)
-    #
     # print('Original board')
     # board.setup()
     # print_board(board)
