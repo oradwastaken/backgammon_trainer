@@ -1,15 +1,16 @@
+import re
 from collections import defaultdict
 from pathlib import Path
 from time import sleep
 
 from backgammon import colors
-from backgammon.board import Board, Team
+from backgammon.board import Board, Move, Team
 
-board_left_file = Path(__file__).parent / "board_left.txt"
+board_left_file = Path(__file__).parent / "data" / "board_left.txt"
 with open(board_left_file, 'r') as f:
     board_left = ''.join(f.readlines())
 
-board_right_file = Path(__file__).parent / "board_right.txt"
+board_right_file = Path(__file__).parent / "data" / "board_right.txt"
 with open(board_right_file, 'r') as f:
     board_right = ''.join(f.readlines())
 
@@ -40,10 +41,25 @@ def read_choice(prompt: str, choices: list[int]) -> int:
     return choice
 
 
+def parse_moves(move_str: str) -> list[Move]:
+    """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list
+    of Moves"""
+    moves = [Move(*[int(pt) for pt in move.split(sep='/')])
+             for move in re.findall(r'\d+/\d+', move_str)]
+    return moves
+
+
+def read_move(prompt: str) -> list[Move]:
+    while (moves := parse_moves(input(prompt))) == []:
+        print('Please provide a valid checker move of the form (24/23, 23/22).')
+    return moves
+
+
 def select_game() -> int:
     prompt = 'Please select a game\n'
     prompt += '1. Point number trainer\n'
-    return read_choice(prompt, [1])
+    prompt += '2. Opening move trainer\n'
+    return read_choice(prompt, [1, 2])
 
 
 def bear_off_question() -> bool:

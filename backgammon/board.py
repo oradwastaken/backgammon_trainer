@@ -10,6 +10,12 @@ class InvalidMove(Exception):
     """Raised when user tries to make an invalid checker play"""
 
 
+class Move(NamedTuple):
+    from_pt: int
+    to_pt: int
+    num_checkers: int = 1
+
+
 class PipCount(NamedTuple):
     X: int
     O: int
@@ -158,8 +164,10 @@ class Board:
         with open(filename, 'r') as f:
             in_dict = json.load(f)
 
-        return Board(bear_off_left=in_dict['bear_off_left'],
-                     points=[Point(*point) for point in in_dict['points']])
+        return Board(
+            bear_off_left=in_dict['bear_off_left'],
+            points=[Point(*point) for point in in_dict['points']]
+            )
 
     def save(self, filename: str | Path):
         with open(filename, 'w') as f:
