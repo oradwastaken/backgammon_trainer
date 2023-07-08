@@ -7,7 +7,7 @@ from typing import NamedTuple, Optional
 
 
 class InvalidMove(Exception):
-    """Raised when user tries to make an invalid checker play"""
+    """Raised when user tries to make an invalid checker play."""
 
 
 class Move(NamedTuple):
@@ -22,22 +22,26 @@ class PipCount(NamedTuple):
 
 
 class Team(StrEnum):
-    X = 'X'
-    O = 'O'
+    X = "X"
+    O = "O"
 
 
 @dataclass(slots=True)
 class Point:
     """Represents a point on the board."""
+
     number: int
     num_checkers: int = 0
     color: Optional[Team] = None
 
 
 class Board:
-    """A backgammon board, comprised of 24 points and the bar point for X (25) and
-    the bar point for O (0). The X team represents the user, and the O team represents
-    the opponent."""
+    """A backgammon board, comprised of 24 points and the bar point for X (25)
+    and the bar point for O (0).
+
+    The X team represents the user, and the O team represents the
+    opponent.
+    """
 
     def __init__(self, points: list[Point] = None, bear_off_left: bool = True):
         self.points = [Point(i) for i in range(26)] if points is None else points
@@ -111,13 +115,13 @@ class Board:
     def pipcount(self) -> PipCount:
         """Calculates and returns the pip count for each player."""
         X_count = sum(
-                point.number * point.num_checkers
-                for point in self.points if point.color == Team.X
-                )
+            point.number * point.num_checkers for point in self.points if point.color == Team.X
+        )
         O_count = sum(
-                (25 - point.number) * point.num_checkers
-                for point in self.points if point.color == Team.O
-                )
+            (25 - point.number) * point.num_checkers
+            for point in self.points
+            if point.color == Team.O
+        )
         return PipCount(X=X_count, O=O_count)
 
     def move_checkers(self, from_pt: int, to_pt: int, num_checkers: int = 1) -> None:
@@ -125,9 +129,9 @@ class Board:
         to_pt = self.points[to_pt]
         if num_checkers > from_pt.num_checkers:
             raise InvalidMove(
-                    f"Not enough checkers on point ({from_pt.num_checkers}) "
-                    f"to move {num_checkers} checkers"
-                    )
+                f"Not enough checkers on point ({from_pt.num_checkers}) "
+                f"to move {num_checkers} checkers"
+            )
 
         if from_pt.color != to_pt.color and to_pt.color is not None:
             self.hit_checker(to_pt.number)
@@ -155,20 +159,22 @@ class Board:
         point.num_checkers = 0
 
     def asdict(self) -> dict:
-        out_dict = {'bear_off_left': self.bear_off_left,
-                    'points': [[point.number, point.num_checkers, point.color] for point in self.points]}
+        out_dict = {
+            "bear_off_left": self.bear_off_left,
+            "points": [[point.number, point.num_checkers, point.color] for point in self.points],
+        }
         return out_dict
 
     @classmethod
     def load(self, filename: str | Path):
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             in_dict = json.load(f)
 
         return Board(
-            bear_off_left=in_dict['bear_off_left'],
-            points=[Point(*point) for point in in_dict['points']]
-            )
+            bear_off_left=in_dict["bear_off_left"],
+            points=[Point(*point) for point in in_dict["points"]],
+        )
 
     def save(self, filename: str | Path):
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             json.dump(self.asdict(), f)

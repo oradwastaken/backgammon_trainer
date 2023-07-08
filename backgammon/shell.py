@@ -7,23 +7,23 @@ from backgammon import colors
 from backgammon.board import Board, Move, Team
 
 board_left_file = Path(__file__).parent / "data" / "board_left.txt"
-with open(board_left_file, 'r') as f:
-    board_left = ''.join(f.readlines())
+with open(board_left_file, "r") as f:
+    board_left = "".join(f.readlines())
 
 board_right_file = Path(__file__).parent / "data" / "board_right.txt"
-with open(board_right_file, 'r') as f:
-    board_right = ''.join(f.readlines())
+with open(board_right_file, "r") as f:
+    board_right = "".join(f.readlines())
 
 
 def clear_lines(n: int = 1) -> None:
-    LINE_UP = '\033[1A'
-    LINE_CLEAR = '\x1b[2K'
+    LINE_UP = "\033[1A"
+    LINE_CLEAR = "\x1b[2K"
     for i in range(n):
         print(LINE_UP, end=LINE_CLEAR)
 
 
 def welcome():
-    print('Welcome to the Backgammon Trainer!')
+    print("Welcome to the Backgammon Trainer!")
 
 
 def read_int(prompt: str) -> int:
@@ -32,49 +32,52 @@ def read_int(prompt: str) -> int:
             output = int(input(prompt).strip().split()[0])
             return output
         except ValueError:
-            print('Please provide a valid integer.')
+            print("Please provide a valid integer.")
 
 
 def read_choice(prompt: str, choices: list[int]) -> int:
     while (choice := read_int(prompt)) not in choices:
-        print('Please select a valid number.')
+        print("Please select a valid number.")
     return choice
 
 
 def parse_moves(move_str: str) -> list[Move]:
     """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list
-    of Moves"""
-    moves = [Move(*[int(pt) for pt in move.split(sep='/')])
-             for move in re.findall(r'\d+/\d+', move_str)]
+    of Moves."""
+    moves = [
+        Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
+    ]
     return moves
 
 
 def read_move(prompt: str) -> list[Move]:
     while (moves := parse_moves(input(prompt))) == []:
-        print('Please provide a valid checker move of the form (24/23, 23/22).')
+        print("Please provide a valid checker move of the form (24/23, 23/22).")
     return moves
 
 
 def select_game() -> int:
-    prompt = 'Please select a game\n'
-    prompt += '1. Point number trainer\n'
-    prompt += '2. Opening move trainer\n'
+    prompt = "Please select a game\n"
+    prompt += "1. Point number trainer\n"
+    prompt += "2. Opening move trainer\n"
     return read_choice(prompt, [1, 2])
 
 
 def bear_off_question() -> bool:
-    prompt = 'What direction would you like to bear off?\n'
-    prompt += '1. Left\n2. Right\n'
+    prompt = "What direction would you like to bear off?\n"
+    prompt += "1. Left\n2. Right\n"
     direction = read_choice(prompt, [1, 2])
     return True if direction == 1 else False
 
 
 def print_board(board: Board, show_points: bool = True):
-    labels = defaultdict(lambda: '  ')
-    labels.update({'BAR': colors.y("BAR"), 'OFF': colors.y("OFF"), 'even': colors.y("░░"), 'odd': '░░'})
+    labels = defaultdict(lambda: "  ")
+    labels.update(
+        {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
+    )
 
     if show_points:
-        labels.update({f'p{i}': f"{i:02}" for i in range(1, 25)})
+        labels.update({f"p{i}": f"{i:02}" for i in range(1, 25)})
 
     X = [colors.r(" X"), colors.r("XX"), colors.r("3X")]
     O = [colors.g(" O"), colors.g("OO"), colors.g("3O")]
@@ -108,13 +111,13 @@ def print_board(board: Board, show_points: bool = True):
 
 def wait(seconds: int):
     for i in range(1, seconds + 1):
-        print('.' * i, end='\r')
+        print("." * i, end="\r")
         sleep(1)
-    print('\n ')
+    print("\n ")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     while True:
-        out = read_int('give me an int')
+        out = read_int("give me an int")
         print(out)
         print(type(out))
