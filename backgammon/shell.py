@@ -42,8 +42,8 @@ def read_choice(prompt: str, choices: list[int]) -> int:
 
 
 def parse_moves(move_str: str) -> list[Move]:
-    """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list
-    of Moves."""
+    """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list of
+    Moves."""
     moves = [
         Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
     ]
@@ -80,7 +80,7 @@ def print_board(board: Board, show_points: bool = True):
         labels.update({f"p{i}": f"{i:02}" for i in range(1, 25)})
 
     X = [colors.r(" X"), colors.r("XX"), colors.r("3X")]
-    O = [colors.g(" O"), colors.g("OO"), colors.g("3O")]
+    O = [colors.g(" O"), colors.g("OO"), colors.g("3O")]  # noqa: E741
 
     for point in board.points_with_checkers:
         checkers = X if point.color == Team.X else O

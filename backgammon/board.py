@@ -18,12 +18,12 @@ class Move(NamedTuple):
 
 class PipCount(NamedTuple):
     X: int
-    O: int
+    O: int  # noqa: E741
 
 
 class Team(StrEnum):
     X = "X"
-    O = "O"
+    O = "O"  # noqa: E741
 
 
 @dataclass(slots=True)
@@ -36,11 +36,10 @@ class Point:
 
 
 class Board:
-    """A backgammon board, comprised of 24 points and the bar point for X (25)
-    and the bar point for O (0).
+    """A backgammon board, comprised of 24 points and the bar point for X (25) and the
+    bar point for O (0).
 
-    The X team represents the user, and the O team represents the
-    opponent.
+    The X team represents the user, and the O team represents the opponent.
     """
 
     def __init__(self, points: list[Point] = None, bear_off_left: bool = True):

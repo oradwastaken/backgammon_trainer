@@ -1,6 +1,6 @@
 from backgammon.board import Board
 from backgammon.games import games
-from backgammon.shell import bear_off_question, print_board, select_game, welcome
+from backgammon.shell import bear_off_question, select_game, welcome
 
 
 def main():
@@ -13,6 +13,7 @@ def main():
     games[game_choice](board)
 
     # An example of saving/loading a board:
+    # from backgammon.shell import print_board
     # board.setup()
     # board.save('temp.json')
     # board.load('temp.json')

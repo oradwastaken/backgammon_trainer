@@ -4,4 +4,4 @@ conda activate bgtrainer
 
 black .
 ruff .
-docformatter --in-place backgammon/*
+docformatter --in-place --recursive --black backgammon/*
