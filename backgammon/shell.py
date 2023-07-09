@@ -31,7 +31,7 @@ def read_int(prompt: str) -> int:
         try:
             output = int(input(prompt).strip().split()[0])
             return output
-        except ValueError:
+        except (ValueError, IndexError):
             print("Please provide a valid integer.")
 
 
@@ -110,7 +110,7 @@ def print_board(board: Board, show_points: bool = True):
 
 
 def wait(seconds: int):
-    for i in range(1, seconds + 1):
+    for i in reversed(range(1, seconds + 1)):
         print("." * i, end="\r")
         sleep(1)
     print("\n ")

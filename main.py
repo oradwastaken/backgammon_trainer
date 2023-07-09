@@ -10,7 +10,8 @@ def main():
 
     # Let's play games!
     game_choice = select_game()
-    games[game_choice](board)
+    game = games[game_choice](board)
+    game.play()
 
     # An example of saving/loading a board:
     # from backgammon.shell import print_board
