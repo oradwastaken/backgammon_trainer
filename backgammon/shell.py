@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 from time import sleep
+from typing import DefaultDict
 
 from backgammon import colors
 from backgammon.board import Board, Move, Team
@@ -71,7 +72,7 @@ def bear_off_question() -> bool:
 
 
 def print_board(board: Board, show_points: bool = True):
-    labels = defaultdict(lambda: "  ")
+    labels: DefaultDict[str, str] = defaultdict(lambda: "  ")
     labels.update(
         {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
     )

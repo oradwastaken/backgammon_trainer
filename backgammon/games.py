@@ -20,8 +20,7 @@ with open(opening_moves_file, "r") as file:
     csvreader = csv.reader(file)
     next(csvreader, None)  # skip the headers
     for row in csvreader:
-        row = (int(item) for item in row if item != "")
-        row = (int(item) for item in row)
+        row_ints = [int(item) for item in row if item != ""]
         dice1, dice2, *remainder = row
         dice = (dice1, dice2)
         moves = [Move(a, b) for a, b in by_pairs(remainder)]
@@ -35,7 +34,7 @@ class Quiz:
     num_wins: int = 0
     total_time: float = 0
     total_rounds: int = 10
-    round_num: int = None
+    round_num: int = 0
 
     def play(self):
         for self.round_num in range(1, self.total_rounds + 1):

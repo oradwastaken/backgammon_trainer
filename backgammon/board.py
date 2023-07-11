@@ -42,7 +42,7 @@ class Board:
     The X team represents the user, and the O team represents the opponent.
     """
 
-    def __init__(self, points: list[Point] = None, bear_off_left: bool = True):
+    def __init__(self, points: Optional[list[Point]] = None, bear_off_left: bool = True):
         self.points = [Point(i) for i in range(26)] if points is None else points
         self.bear_off_left = bear_off_left
 
@@ -123,9 +123,9 @@ class Board:
         )
         return PipCount(X=X_count, O=O_count)
 
-    def move_checkers(self, from_pt: int, to_pt: int, num_checkers: int = 1) -> None:
-        from_pt = self.points[from_pt]
-        to_pt = self.points[to_pt]
+    def move_checkers(self, from_pt_num: int, to_pt_num: int, num_checkers: int = 1) -> None:
+        from_pt = self.points[from_pt_num]
+        to_pt = self.points[to_pt_num]
         if num_checkers > from_pt.num_checkers:
             raise InvalidMove(
                 f"Not enough checkers on point ({from_pt.num_checkers}) "
@@ -165,11 +165,11 @@ class Board:
         return out_dict
 
     @classmethod
-    def load(self, filename: str | Path):
+    def load(cls, filename: str | Path):
         with open(filename, "r") as f:
             in_dict = json.load(f)
 
-        return Board(
+        return cls(
             bear_off_left=in_dict["bear_off_left"],
             points=[Point(*point) for point in in_dict["points"]],
         )
