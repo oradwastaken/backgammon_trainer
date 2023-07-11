@@ -43,7 +43,7 @@ class Board:
     """
 
     def __init__(self, points: Optional[list[Point]] = None, bear_off_left: bool = True):
-        self.points = [Point(i) for i in range(26)] if points is None else points
+        self.points: list[Point] = [Point(i) for i in range(26)] if points is None else points
         self.bear_off_left = bear_off_left
 
     def reset(self) -> None:

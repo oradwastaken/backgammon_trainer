@@ -95,7 +95,7 @@ def print_board(board: Board, show_points: bool = True):
             labels.update({f"{point.number}_{i % 5 + 1}": checkers[2]})
 
     # Checkers on the bar are special cases:
-    for point, checkers in [[board.points[0], O], [board.points[25], X]]:
+    for point, checkers in zip([board.points[0], board.points[25]], [O, X]):
         if point.num_checkers > 0:
             for i in range(point.num_checkers):
                 labels.update({f"{point.number}_{i % 3 + 1}": checkers[0]})
