@@ -5,23 +5,24 @@ Want to get better at backgammon? You'll need practice.
 ## Trainers
 
 ### Point number trainer
-
 To help you identify what point a checker is on more quickly!
 ![](docs/point_number_trainer.png)
 
 ### Opening move trainer
-
 To help you memorize the best opening plays!!
+![](docs/opening_move_trainer.png)
+
+### Pip count trainer
+Practice your pip-counting!!!
+![](docs/pip_count_trainer.png)
 
 ## Features
-
 * Bear-off on the left OR the right!
 
 * Track results! Break your record!
   ![](docs/results.png)
 
 ## Installation
-
 For now, we use conda (or better yet [mamba](https://github.com/conda-forge/miniforge)) to maintain a python
 environment:
 

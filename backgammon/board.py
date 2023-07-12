@@ -83,7 +83,7 @@ class Board:
         self.points[point_num].num_checkers = 1
         self.points[point_num].color = Team.X
 
-    def random_board(self, bar: bool = False, max_checkers: int = 5) -> None:
+    def random_board(self, bar: bool = False) -> None:
         self.reset()
         touched_points = []
 
@@ -98,7 +98,7 @@ class Board:
                     continue
                 touched_points.append(point_num)
 
-                num_checkers = random.randint(1, max_checkers)
+                num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
                 if num_checkers > remaining_checkers:
                     num_checkers = remaining_checkers
                 remaining_checkers = remaining_checkers - num_checkers

@@ -6,7 +6,7 @@ from pathlib import Path
 from time import perf_counter
 
 from backgammon.board import Board, Move
-from backgammon.shell import print_board, read_int, read_move, wait
+from backgammon.shell import print_board, read_choice, read_int, read_move, read_pipcount, wait
 
 
 def by_pairs(iterable):
@@ -101,14 +101,40 @@ class OpeningMoves(Quiz):
     def play_round(self, correct_answers) -> bool:
         print_board(self.board, show_points=True)
         prompt = f"You rolled a {dice}\nWhat is your move?\n"
-        prompt += "Please provide it in the form (24/23, 23/22)\n"
+        prompt += "Please provide it in the form: (24/23, 23/22)\n"
         start_time = perf_counter()
         guess = read_move(prompt)
         self.total_time += perf_counter() - start_time
         return guess in correct_answers
 
 
-games = {1: PointNumber, 2: OpeningMoves}
+@dataclass
+class PipCountGame(Quiz):
+    show_points: bool = True
+
+    def play(self):
+        response = read_choice(
+            'Would you like to see the point numbers?\n'
+            '1. Yes, 2. No ', [1, 2]
+            )
+        self.show_points = True if response == 1 else False
+        super().play()
+
+    def setup_board(self):
+        self.board.random_board()
+        return [self.board.pipcount]
+
+    def play_round(self, correct_answers) -> bool:
+        print_board(self.board, show_points=self.show_points)
+        prompt = f"What are the two pip counts?\n"
+        prompt += "Please provide it in the form: X=167, O=167\n"
+        start_time = perf_counter()
+        guess = read_pipcount(prompt)
+        self.total_time += perf_counter() - start_time
+        return guess in [correct_answers]
+
+
+games = {1: PointNumber, 2: OpeningMoves, 3: PipCountGame}
 
 if __name__ == "__main__":
     point_number_game = PointNumber(Board())
