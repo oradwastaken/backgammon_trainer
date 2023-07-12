@@ -6,7 +6,14 @@ from pathlib import Path
 from time import perf_counter
 
 from backgammon.board import Board, Move
-from backgammon.shell import print_board, read_choice, read_int, read_move, read_pipcount, wait
+from backgammon.shell import (
+    print_board,
+    read_int,
+    read_move,
+    read_pipcount,
+    read_yesno,
+    wait,
+)
 
 
 def by_pairs(iterable):
@@ -47,6 +54,10 @@ class Quiz:
             self.show_score()
 
         self.show_final_score()
+
+        response = read_yesno("Would you like to play again? (Y/N)\n")
+        if response:
+            self.play()
 
     def setup_board(self):
         raise NotImplementedError
@@ -113,10 +124,8 @@ class PipCountGame(Quiz):
     show_points: bool = True
 
     def play(self):
-        response = read_choice(
-            "Would you like to see the point numbers?\n" "1. Yes, 2. No ", [1, 2]
-        )
-        self.show_points = True if response == 1 else False
+        response = read_yesno("Would you like to see the point numbers?\n")
+        self.show_points = response
         super().play()
 
     def setup_board(self):
