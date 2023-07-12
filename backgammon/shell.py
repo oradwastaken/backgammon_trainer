@@ -7,6 +7,10 @@ from typing import DefaultDict
 from backgammon import colors
 from backgammon.board import Board, Move, PipCount, Team
 
+logo_file = Path(__file__).parent / "data" / "logo.txt"
+with open(logo_file, 'r') as f:
+    logo = "".join(f.readlines())
+
 board_left_file = Path(__file__).parent / "data" / "board_left.txt"
 with open(board_left_file, "r") as f:
     board_left = "".join(f.readlines())
@@ -24,7 +28,7 @@ def clear_lines(n: int = 1) -> None:
 
 
 def welcome():
-    print("Welcome to the Backgammon Trainer!")
+    print(logo)
 
 
 def read_int(prompt: str) -> int:
