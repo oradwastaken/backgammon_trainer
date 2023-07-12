@@ -114,9 +114,8 @@ class PipCountGame(Quiz):
 
     def play(self):
         response = read_choice(
-            'Would you like to see the point numbers?\n'
-            '1. Yes, 2. No ', [1, 2]
-            )
+            "Would you like to see the point numbers?\n" "1. Yes, 2. No ", [1, 2]
+        )
         self.show_points = True if response == 1 else False
         super().play()
 
@@ -126,7 +125,7 @@ class PipCountGame(Quiz):
 
     def play_round(self, correct_answers) -> bool:
         print_board(self.board, show_points=self.show_points)
-        prompt = f"What are the two pip counts?\n"
+        prompt = "What are the two pip counts?\n"
         prompt += "Please provide it in the form: X=167, O=167\n"
         start_time = perf_counter()
         guess = read_pipcount(prompt)

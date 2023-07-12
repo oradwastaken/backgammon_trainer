@@ -35,6 +35,7 @@ def read_int(prompt: str) -> int:
         except (ValueError, IndexError):
             print("Please provide a valid integer.")
 
+
 def read_choice(prompt: str, choices: list[int]) -> int:
     while (choice := read_int(prompt)) not in choices:
         print("Please select a valid number.")
@@ -45,8 +46,8 @@ def parse_moves(move_str: str) -> list[Move]:
     """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list of
     Moves."""
     moves = [
-            Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
-            ]
+        Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
+    ]
     return moves
 
 
@@ -58,9 +59,9 @@ def read_move(prompt: str) -> list[Move]:
 
 def parse_pipcounts(pipcount_str: str) -> PipCount:
     X_pips = re.findall(r"X=\d+", pipcount_str.upper())
-    X_pips_num = int(X_pips[0].split(sep='=')[-1])
+    X_pips_num = int(X_pips[0].split(sep="=")[-1])
     O_pips = re.findall(r"O=\d+", pipcount_str.upper())
-    O_pips_num = int(O_pips[0].split(sep='=')[-1])
+    O_pips_num = int(O_pips[0].split(sep="=")[-1])
     return PipCount(X=X_pips_num, O=O_pips_num)
 
 
@@ -70,6 +71,7 @@ def read_pipcount(prompt: str) -> PipCount:
             return parse_pipcounts(input(prompt))
         except (ValueError, IndexError):
             print("Please provide a valid pip count of the form: X=167, O=167")
+
 
 def select_game() -> int:
     prompt = "Please select a game\n"
@@ -89,8 +91,8 @@ def bear_off_question() -> bool:
 def print_board(board: Board, show_points: bool = True):
     labels: DefaultDict[str, str] = defaultdict(lambda: "  ")
     labels.update(
-            {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
-            )
+        {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
+    )
 
     if show_points:
         labels.update({f"p{i}": f"{i:02}" for i in range(1, 25)})
