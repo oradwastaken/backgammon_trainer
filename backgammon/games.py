@@ -13,7 +13,7 @@ from backgammon.shell import (
     read_pipcount,
     read_yesno,
     wait,
-)
+    )
 
 
 def by_pairs(iterable):
@@ -44,8 +44,11 @@ class Quiz:
     round_num: int = 0
 
     def play(self):
+        self.num_wins = 0
+        self.total_time = 0
         for self.round_num in range(1, self.total_rounds + 1):
             correct_answers = self.setup_board()
+            wait(3)
             win = self.play_round(correct_answers)
             if win:
                 self.you_win()
@@ -55,7 +58,7 @@ class Quiz:
 
         self.show_final_score()
 
-        response = read_yesno("Would you like to play again? (Y/N)\n")
+        response = read_yesno("\nWould you like to play again? (Y/N)\n")
         if response:
             self.play()
 
@@ -75,7 +78,6 @@ class Quiz:
 
     def show_score(self):
         print(f"\nScore: {self.num_wins}/{self.round_num}")
-        wait(3)
 
     def show_final_score(self):
         print(f"Final score: {self.num_wins}/{self.total_rounds}!")
@@ -124,7 +126,7 @@ class PipCountGame(Quiz):
     show_points: bool = True
 
     def play(self):
-        response = read_yesno("Would you like to see the point numbers?\n")
+        response = read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
         self.show_points = response
         super().play()
 

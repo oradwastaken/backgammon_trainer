@@ -84,7 +84,7 @@ def read_pipcount(prompt: str) -> PipCount:
 
 
 def select_game() -> int:
-    prompt = "Please select a game\n"
+    prompt = "\nPlease select a game\n"
     prompt += "1. Point number trainer\n"
     prompt += "2. Opening move trainer\n"
     prompt += "3. Pip counting trainer\n"
@@ -92,7 +92,7 @@ def select_game() -> int:
 
 
 def bear_off_question() -> bool:
-    prompt = "What direction would you like to bear off?\n"
+    prompt = "\nWhat direction would you like to bear off?\n"
     prompt += "1. Left\n2. Right\n"
     direction = read_choice(prompt, [1, 2])
     return True if direction == 1 else False

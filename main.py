@@ -6,10 +6,9 @@ from backgammon.shell import bear_off_question, select_game, welcome
 def main():
     welcome()
 
-    board = Board(bear_off_left=bear_off_question())
-
     # Let's play games!
     game_choice = select_game()
+    board = Board(bear_off_left=bear_off_question())
     game = games[game_choice](board)
     game.play()
 
