@@ -15,6 +15,11 @@ class Move(NamedTuple):
     to_pt: int
     num_checkers: int = 1
 
+    def __str__(self):
+        if self.num_checkers > 1:
+            return f'{self.from_pt}/{self.to_pt}({self.num_checkers})'
+        return f'{self.from_pt}/{self.to_pt}'
+
 
 class PipCount(NamedTuple):
     X: int

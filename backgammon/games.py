@@ -13,7 +13,7 @@ from backgammon.shell import (
     read_pipcount,
     read_yesno,
     wait,
-    )
+)
 
 
 def by_pairs(iterable):
@@ -73,8 +73,9 @@ class Quiz:
         print("Right! 😎")
 
     def you_lose(self, correct_answers):
+        correct_answers_str = ' '.join([str(answer) for answer in correct_answers])
         print("Oh no! 😢")
-        print(f"The correct answer was {correct_answers}")
+        print(f"The correct answer was {correct_answers_str}")
 
     def show_score(self):
         print(f"\nScore: {self.num_wins}/{self.round_num}")
@@ -116,9 +117,10 @@ class OpeningMoves(Quiz):
         prompt = f"You rolled a {dice}\nWhat is your move?\n"
         prompt += "Please provide it in the form: (24/23, 23/22)\n"
         start_time = perf_counter()
-        guess = read_move(prompt)
+        guess_moves = read_move(prompt)
         self.total_time += perf_counter() - start_time
-        return guess in correct_answers
+        print(f"Your move: {' '.join([str(move) for move in guess_moves])}")
+        return all(move in correct_answers for move in guess_moves)
 
 
 @dataclass
