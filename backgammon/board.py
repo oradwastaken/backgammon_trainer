@@ -92,7 +92,7 @@ class Board:
         self.reset()
         touched_points = []
 
-        for color in [Team.X, Team.O]:
+        for color in (Team.X, Team.O):
             remaining_checkers = 15
             while remaining_checkers > 0:
                 if bar:

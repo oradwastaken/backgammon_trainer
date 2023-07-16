@@ -23,7 +23,7 @@ def by_pairs(iterable):
 
 opening_moves_file = Path(__file__).parent / "data" / "opening_moves.csv"
 opening_moves = defaultdict(list)
-with open(opening_moves_file, "r") as file:
+with opening_moves_file.open("r") as file:
     csvreader = csv.reader(file)
     next(csvreader, None)  # skip the headers
     for row in csvreader:

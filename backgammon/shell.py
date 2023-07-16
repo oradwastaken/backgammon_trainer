@@ -8,16 +8,13 @@ from backgammon import colors
 from backgammon.board import Board, Move, PipCount, Team
 
 logo_file = Path(__file__).parent / "data" / "logo.txt"
-with open(logo_file, "r") as f:
-    logo = "".join(f.readlines())
+logo = logo_file.read_text()
 
 board_left_file = Path(__file__).parent / "data" / "board_left.txt"
-with open(board_left_file, "r") as f:
-    board_left = "".join(f.readlines())
+board_left = board_left_file.read_text()
 
 board_right_file = Path(__file__).parent / "data" / "board_right.txt"
-with open(board_right_file, "r") as f:
-    board_right = "".join(f.readlines())
+board_right = board_right_file.read_text()
 
 
 def clear_lines(n: int = 1) -> None:
@@ -47,7 +44,7 @@ def read_choice(prompt: str, choices: list[int]) -> int:
 
 
 def read_yesno(prompt: str) -> bool:
-    while (answer := input(prompt).strip()) not in ["Y", "y", "N", "n"]:
+    while (answer := input(prompt).strip()) not in ("Y", "y", "N", "n"):
         print("Please provide a valid response (Y/N).")
     return answer.upper() == "Y"
 
@@ -56,8 +53,8 @@ def parse_moves(move_str: str) -> list[Move]:
     """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list of
     Moves."""
     moves = [
-        Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
-    ]
+            Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
+            ]
     return moves
 
 
@@ -101,8 +98,8 @@ def bear_off_question() -> bool:
 def print_board(board: Board, show_points: bool = True):
     labels: DefaultDict[str, str] = defaultdict(lambda: "  ")
     labels.update(
-        {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
-    )
+            {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
+            )
 
     if show_points:
         labels.update({f"p{i}": f"{i:02}" for i in range(1, 25)})
