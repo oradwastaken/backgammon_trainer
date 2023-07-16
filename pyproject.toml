@@ -4,4 +4,7 @@ target-version = "py311"
 
 [tool.black]
 line-length = 100
-target-version = ['py311', 'py38']
+target-version = ['py311']
+
+[tool.refurb]
+ignore = [140]
