@@ -73,7 +73,7 @@ class Quiz:
         print("Right! 😎")
 
     def you_lose(self, correct_answers):
-        correct_answers_str = ' '.join([str(answer) for answer in correct_answers])
+        correct_answers_str = " ".join([str(answer) for answer in correct_answers])
         print("Oh no! 😢")
         print(f"The correct answer was {correct_answers_str}")
 

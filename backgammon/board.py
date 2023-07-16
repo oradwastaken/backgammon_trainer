@@ -17,8 +17,8 @@ class Move(NamedTuple):
 
     def __str__(self):
         if self.num_checkers > 1:
-            return f'{self.from_pt}/{self.to_pt}({self.num_checkers})'
-        return f'{self.from_pt}/{self.to_pt}'
+            return f"{self.from_pt}/{self.to_pt}({self.num_checkers})"
+        return f"{self.from_pt}/{self.to_pt}"
 
 
 class PipCount(NamedTuple):
