@@ -2,3 +2,5 @@ ruff
 black
 docformatter
 mypy
+pytest
+coverage
