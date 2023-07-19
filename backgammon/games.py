@@ -1,7 +1,7 @@
 import csv
 import random
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter
 
@@ -37,7 +37,6 @@ with opening_moves_file.open("r") as file:
 
 @dataclass
 class Quiz:
-    board: Board
     num_wins: int = 0
     total_time: float = 0
     total_rounds: int = 10
@@ -62,12 +61,6 @@ class Quiz:
         if response:
             self.play()
 
-    def setup_board(self):
-        raise NotImplementedError
-
-    def play_round(self, correct_answers) -> bool:
-        raise NotImplementedError
-
     def you_win(self):
         self.num_wins += 1
         print("Right! 😎")
@@ -87,7 +80,13 @@ class Quiz:
 
 
 @dataclass
-class PointNumber(Quiz):
+class PointNumber:
+    board: Board = field(default_factory=Board)
+    quiz: Quiz = field(default_factory=Quiz)
+
+    def play(self):
+        self.quiz.play()
+
     def setup_board(self):
         self.board.reset()
         self.board.random_point()
@@ -99,12 +98,18 @@ class PointNumber(Quiz):
         prompt = "What point is the checker on?\n  "
         start_time = perf_counter()
         guess = read_int(prompt)
-        self.total_time += perf_counter() - start_time
+        self.quiz.total_time += perf_counter() - start_time
         return guess in correct_answers
 
 
 @dataclass
-class OpeningMoves(Quiz):
+class OpeningMoves:
+    board: Board = field(default_factory=Board)
+    quiz: Quiz = field(default_factory=Quiz)
+
+    def play(self):
+        self.quiz.play()
+
     def setup_board(self):
         self.board.setup()
         keys = list(opening_moves)
@@ -118,19 +123,21 @@ class OpeningMoves(Quiz):
         prompt += "Please provide it in the form: (24/23, 23/22)\n"
         start_time = perf_counter()
         guess_moves = read_move(prompt)
-        self.total_time += perf_counter() - start_time
+        self.quiz.total_time += perf_counter() - start_time
         print(f"Your move: {' '.join([str(move) for move in guess_moves])}")
         return all(move in correct_answers for move in guess_moves)
 
 
 @dataclass
-class PipCountGame(Quiz):
-    show_points: bool = True
+class PipCountGame:
+    board: Board = field(default_factory=Board)
+    quiz: Quiz = field(default_factory=Quiz)
+    show_points: bool = False
 
     def play(self):
         response = read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
         self.show_points = response
-        super().play()
+        self.quiz.play()
 
     def setup_board(self):
         self.board.random_board()
@@ -142,7 +149,7 @@ class PipCountGame(Quiz):
         prompt += "Please provide it in the form: X=167, O=167\n"
         start_time = perf_counter()
         guess = read_pipcount(prompt)
-        self.total_time += perf_counter() - start_time
+        self.quiz.total_time += perf_counter() - start_time
         return guess in [correct_answers]
 
 

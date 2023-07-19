@@ -53,8 +53,8 @@ def parse_moves(move_str: str) -> list[Move]:
     """Converts a move of the form (24/23), (24/23, 23/22) or 24/23 to a list of
     Moves."""
     moves = [
-            Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
-            ]
+        Move(*[int(pt) for pt in move.split(sep="/")]) for move in re.findall(r"\d+/\d+", move_str)
+    ]
     return moves
 
 
@@ -98,8 +98,8 @@ def bear_off_question() -> bool:
 def print_board(board: Board, show_points: bool = True):
     labels: DefaultDict[str, str] = defaultdict(lambda: "  ")
     labels.update(
-            {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
-            )
+        {"BAR": colors.y("BAR"), "OFF": colors.y("OFF"), "even": colors.y("░░"), "odd": "░░"}
+    )
 
     if show_points:
         labels.update({f"p{i}": f"{i:02}" for i in range(1, 25)})
