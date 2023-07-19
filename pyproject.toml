@@ -1,3 +1,36 @@
+[project]
+name = "bgtrainer"
+version = '0.0.1'
+description = "A fast portable backgammon trainer"
+readme = "README.md"
+authors = [{ name = "Orad Reshef", email = "oradwastaken@gmail.com" }]
+requires-python = ">=3.11"
+license = { text = "MIT License" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Environment :: Console",
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Topic :: Games/Entertainment :: Board Games",
+    "Typing :: Typed"
+]
+dynamic = ["dependencies", "optional-dependencies"]
+
+
+
+[project.urls]
+Repository = "https://github.com/oradwastaken/backgammon_trainer/"
+
+[tool.setuptools]
+packages = ["backgammon"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements-dev.txt"] }
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

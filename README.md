@@ -23,12 +23,14 @@ Practice your pip-counting!!!
   ![](docs/results.png)
 
 ## Installation
-For now, we use conda (or better yet [mamba](https://github.com/conda-forge/miniforge)) to maintain a python
-environment:
+We can use conda (or better yet [mamba](https://github.com/conda-forge/miniforge)) to maintain an isolated python environment:
 
 ```
 ## create the environment
 mamba create -n bgtrainer -c conda-forge "python>=3.10" --file requirements.txt
+
+## install package without using pip for dependencies
+pip install --no-build-isolation --no-deps .
 ```
 
 To run, simply activate the appropriate environment and run:
@@ -44,7 +46,10 @@ You will want to install other tools, as well as adding git commit hooks:
 
 ```
 ## installs the additional requirements, without updating pkgs
-mamba install -n bgtrainer --freeze-installed --file requirements.develop.txt
+mamba install -n bgtrainer --freeze-installed --file requirements-dev.txt
+
+## editable install of the package without using pip for dependencies
+pip install --no-build-isolation --no-deps -e .
 
 cat hooks > .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
