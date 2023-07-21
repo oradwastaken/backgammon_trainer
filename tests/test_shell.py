@@ -1,5 +1,5 @@
-from backgammon import shell
-from backgammon.board import Move
+from bgtrainer import shell
+from bgtrainer.board import Move
 
 
 def test_parse_multiple_moves():

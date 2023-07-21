@@ -22,8 +22,10 @@ dynamic = ["dependencies", "optional-dependencies"]
 [project.urls]
 Repository = "https://github.com/oradwastaken/backgammon_trainer/"
 
-[tool.setuptools]
-packages = ["backgammon"]
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["bgtrainer*"]
+exclude = ["test"]
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
@@ -45,5 +47,5 @@ ignore = [140]
 [tool.coverage.run]
 omit = [
     "tests/*",
-    "backgammon/__init__.py",
-    ]
+    "bgtrainer/__init__.py",
+]

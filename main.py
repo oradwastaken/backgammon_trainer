@@ -1,6 +1,6 @@
-from backgammon.board import Board
-from backgammon.games import games
-from backgammon.shell import bear_off_question, select_game, welcome
+from bgtrainer.board import Board
+from bgtrainer.games import games
+from bgtrainer.shell import bear_off_question, select_game, welcome
 
 
 def main():

@@ -4,8 +4,8 @@ conda activate bgtrainer
 
 black .
 ruff .
-docformatter --in-place --recursive --black backgammon/*
-mypy backgammon
+docformatter --in-place --recursive --black src/*
+mypy src
 
 coverage run -m pytest
 coverage report

@@ -5,8 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter
 
-from backgammon.board import Board, Move
-from backgammon.shell import (
+from bgtrainer.board import Board, Move
+from bgtrainer.shell import (
     print_board,
     read_int,
     read_move,
