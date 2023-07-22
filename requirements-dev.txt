@@ -1,6 +1,7 @@
-ruff
 black
+coverage
 docformatter
 mypy
+pre-commit
 pytest
-coverage
+ruff

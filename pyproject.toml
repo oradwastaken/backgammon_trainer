@@ -49,3 +49,6 @@ omit = [
     "tests/*",
     "bgtrainer/__init__.py",
 ]
+
+[tool.coverage.report]
+skip_empty = true

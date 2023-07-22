@@ -51,6 +51,5 @@ mamba install -n bgtrainer --freeze-installed --file requirements-dev.txt
 ## editable install of the package without using pip for dependencies
 pip install --no-build-isolation --no-deps -e .
 
-cat hooks > .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+pre-commit install
 ```
