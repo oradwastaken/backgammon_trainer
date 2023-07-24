@@ -38,14 +38,14 @@ repos:
         name: Run pytest
         entry: coverage
         language: system
-        types: [ python ]
+        types: [python]
         pass_filenames: false
         args: [run, -m, pytest]
     -   id: coverage
         name: Check test coverage
         entry: coverage
         language: system
-        types: [ python ]
+        types: [python]
         args: [report]
         always_run: true
         verbose: true
