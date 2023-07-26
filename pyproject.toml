@@ -18,6 +18,8 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 
+[project.scripts]
+bgtrainer = "bgtrainer.main:main"
 
 [project.urls]
 Repository = "https://github.com/oradwastaken/backgammon_trainer/"
