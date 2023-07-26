@@ -27,6 +27,9 @@ where = ["src"]
 include = ["bgtrainer*"]
 exclude = ["test"]
 
+[tool.setuptools.package-data]
+bgtrainer = ["data/*.txt", "data/*.csv"]
+
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
 
