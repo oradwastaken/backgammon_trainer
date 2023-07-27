@@ -21,3 +21,15 @@ def test_Point__cant_change_point_number():
         point0.number = 1
     assert "object has no setter" in str(err_info.value)
     assert point0.number == 0
+
+
+def test_Point__change_colors():
+    point = Point(0)
+    assert point.color is None
+
+    point.num_checkers = 1
+    point.color = Team.X
+    assert point.color == Team.X
+
+    point.color = Team.O
+    assert point.color == Team.O

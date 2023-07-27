@@ -44,6 +44,4 @@ def c(foo: Any) -> str:
     return f"{cyan}{foo}{reset}"
 
 
-if __name__ == "__main__":
-    # Example how to use:
-    print(f"{r('This is in red')} This is normal")
+# Example how to use: print(f"{r('This is in red')} This is normal")
