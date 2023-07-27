@@ -33,7 +33,7 @@ mamba create -n bgtrainer -c conda-forge "python>=3.10" --file requirements.txt
 pip install --no-build-isolation --no-deps .
 ```
 
-To run, simply activate the appropriate environment and run `bgtrainer`t g:
+To run, simply activate the appropriate environment and run `bgtrainer`:
 
  ```
  conda activate bgtrainer
