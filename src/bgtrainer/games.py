@@ -59,15 +59,15 @@ class Quiz:
         self.total_time = 0
         self.round_num = 0
 
-    def you_win(self):
-        self.num_wins += 1
-        print("Right! 😎")
-
-    def you_lose(self):
-        print("Oh no! 😢")
-        if self.correct_answers is not None:
-            correct_answers_str = " ".join([str(answer) for answer in self.correct_answers])
-            print(f"The correct answer was {correct_answers_str}")
+    def update_score(self, win: bool):
+        if win:
+            self.num_wins += 1
+            print("Right! 😎")
+        else:
+            print("Oh no! 😢")
+            if self.correct_answers is not None:
+                correct_answers_str = " ".join([str(answer) for answer in self.correct_answers])
+                print(f"The correct answer was {correct_answers_str}")
 
     def show_score(self):
         print(f"\nScore: {self.num_wins}/{self.round_num}")
@@ -125,12 +125,7 @@ class PointNumber(Game):
         self.quiz.start_clock()
         guess = read_int(prompt)
         self.quiz.stop_clock()
-        win = guess in self.quiz.correct_answers
-
-        if win:
-            self.quiz.you_win()
-        else:
-            self.quiz.you_lose()
+        self.quiz.update_score(win=guess in self.quiz.correct_answers)
         self.quiz.show_score()
 
 
@@ -166,12 +161,7 @@ class OpeningMoves(Game):
         guess_moves = read_move(prompt)
         self.quiz.stop_clock()
         print(f"Your move: {' '.join([str(move) for move in guess_moves])}")
-        win = all(move in self.quiz.correct_answers for move in guess_moves)
-
-        if win:
-            self.quiz.you_win()
-        else:
-            self.quiz.you_lose()
+        self.quiz.update_score(win=all(move in self.quiz.correct_answers for move in guess_moves))
         self.quiz.show_score()
 
 
@@ -208,12 +198,7 @@ class PipCountGame(Game):
         self.quiz.start_clock()
         guess = read_pipcount(prompt)
         self.quiz.stop_clock()
-        win = guess in self.quiz.correct_answers
-
-        if win:
-            self.quiz.you_win()
-        else:
-            self.quiz.you_lose()
+        self.quiz.update_score(win=guess in self.quiz.correct_answers)
         self.quiz.show_score()
 
 
@@ -250,12 +235,7 @@ class RelativePipCount(Game):
         self.quiz.start_clock()
         guess = read_int(prompt)
         self.quiz.stop_clock()
-        win = guess in self.quiz.correct_answers
-
-        if win:
-            self.quiz.you_win()
-        else:
-            self.quiz.you_lose()
+        self.quiz.update_score(win=guess in self.quiz.correct_answers)
         self.quiz.show_score()
 
 
