@@ -114,9 +114,9 @@ class Board:
             remaining_checkers = 15
             while remaining_checkers > 0:
                 if bar:
-                    point_num = random.randint(0, 26)
+                    point_num = random.randint(0, 25)
                 else:
-                    point_num = random.randint(1, 25)
+                    point_num = random.randint(1, 24)
                 if point_num in touched_points:
                     continue
                 touched_points.append(point_num)

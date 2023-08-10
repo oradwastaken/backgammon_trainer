@@ -15,7 +15,7 @@ from bgtrainer.shell import (
     read_pipcount,
     read_yesno,
     wait,
-    )
+)
 
 
 def by_pairs(iterable):
@@ -40,6 +40,7 @@ with opening_moves_file.open("r") as file:
 @dataclass
 class Quiz:
     """An object that keeps track of the quiz elements: the score, times, and high scores"""
+
     num_wins: int = 0
     total_time: float = 0
     total_rounds: int = 10
@@ -62,7 +63,7 @@ class Quiz:
         self.num_wins += 1
         print("Right! 😎")
 
-    def you_lose(self, ):
+    def you_lose(self):
         print("Oh no! 😢")
         if self.correct_answers is not None:
             correct_answers_str = " ".join([str(answer) for answer in self.correct_answers])
@@ -100,21 +101,37 @@ class PointNumber(Game):
     quiz: Quiz = field(default_factory=Quiz)
 
     def play(self):
-        self.quiz.play()
+        self.quiz.setup_game()
+        for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
+            self.play_round()
+
+        self.quiz.show_final_score()
+
+        play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
+        if play_again:
+            self.play()
 
     def setup_board(self):
         self.board.reset()
         self.board.random_point()
         correct_answer = self.board.points_with_checkers[0].number
-        return [correct_answer]
+        self.quiz.correct_answers = [correct_answer]
 
-    def play_round(self) -> bool:
+    def play_round(self):
+        self.setup_board()
+        wait(3)
         print_board(self.board, show_points=False)
-        prompt = "What point is the checker on?\n  "
-        start_time = perf_counter()
+        prompt = f" Round {self.quiz.round_num}:What point is the checker on?\n  "
+        self.quiz.start_clock()
         guess = read_int(prompt)
-        self.quiz.total_time += perf_counter() - start_time
-        return guess in
+        self.quiz.stop_clock()
+        win = guess in self.quiz.correct_answers
+
+        if win:
+            self.quiz.you_win()
+        else:
+            self.quiz.you_lose()
+        self.quiz.show_score()
 
 
 @dataclass
@@ -139,12 +156,11 @@ class OpeningMoves(Game):
         dice = random.choice(keys)
         self.quiz.correct_answers = opening_moves[dice]
 
-    def play_round(self) -> bool:
-        """Returns true if you win the round"""
+    def play_round(self):
         self.setup_board()
         wait(3)
         print_board(self.board, show_points=True)
-        prompt = f"You rolled a {dice}\nWhat is your move?\n"
+        prompt = f"Round {self.quiz.round_num}: You rolled a {dice}\nWhat is your move?\n"
         prompt += "Please provide it in the form: (24/23, 23/22)\n"
         self.quiz.start_clock()
         guess_moves = read_move(prompt)
@@ -157,7 +173,6 @@ class OpeningMoves(Game):
         else:
             self.quiz.you_lose()
         self.quiz.show_score()
-        return win
 
 
 @dataclass
@@ -169,23 +184,82 @@ class PipCountGame(Game):
     def play(self):
         response = read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
         self.show_points = response
-        self.quiz.play()
+        self.quiz.setup_game()
+
+        for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
+            self.play_round()
+
+        self.quiz.show_final_score()
+
+        play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
+        if play_again:
+            self.play()
 
     def setup_board(self):
         self.board.random_board()
-        return [self.board.pipcount]
+        self.quiz.correct_answers = [self.board.pipcount]
 
-    def play_round(self, correct_answers) -> bool:
+    def play_round(self):
+        self.setup_board()
+        wait(3)
         print_board(self.board, show_points=self.show_points)
         prompt = "What are the two pip counts?\n"
         prompt += "Please provide it in the form: X=167, O=167\n"
-        start_time = perf_counter()
+        self.quiz.start_clock()
         guess = read_pipcount(prompt)
-        self.quiz.total_time += perf_counter() - start_time
-        return guess in [correct_answers]
+        self.quiz.stop_clock()
+        win = guess in self.quiz.correct_answers
+
+        if win:
+            self.quiz.you_win()
+        else:
+            self.quiz.you_lose()
+        self.quiz.show_score()
 
 
-games = {1: PointNumber, 2: OpeningMoves, 3: PipCountGame}
+@dataclass
+class RelativePipCount(Game):
+    board: Board = field(default_factory=Board)
+    quiz: Quiz = field(default_factory=Quiz)
+    show_points: bool = False
+
+    def play(self):
+        response = read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
+        self.show_points = response
+        self.quiz.setup_game()
+
+        for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
+            self.play_round()
+
+        self.quiz.show_final_score()
+
+        play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
+        if play_again:
+            self.play()
+
+    def setup_board(self):
+        self.board.random_board()
+        self.quiz.correct_answers = [self.board.pipcount.X - self.board.pipcount.O]
+
+    def play_round(self):
+        self.setup_board()
+        wait(3)
+        print_board(self.board, show_points=self.show_points)
+        prompt = "What is the relative pipcount?\n"
+        prompt += "Negative numbers mean you (X) are ahead.\n"
+        self.quiz.start_clock()
+        guess = read_int(prompt)
+        self.quiz.stop_clock()
+        win = guess in self.quiz.correct_answers
+
+        if win:
+            self.quiz.you_win()
+        else:
+            self.quiz.you_lose()
+        self.quiz.show_score()
+
+
+games = {1: PointNumber, 2: OpeningMoves, 3: PipCountGame, 4: RelativePipCount}
 
 if __name__ == "__main__":
     point_number_game = PointNumber(Board())
