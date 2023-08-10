@@ -33,6 +33,8 @@ class Team(StrEnum):
 class Point:
     """Represents a point on the board."""
 
+    __slots__ = ("_number", "num_checkers", "_color")
+
     def __init__(self, number: int, num_checkers: int = 0, color: Optional[Team] = None):
         self._number = number
         self.num_checkers = num_checkers
@@ -60,6 +62,8 @@ class Board:
 
     The X team represents the user, and the O team represents the opponent.
     """
+
+    __slots__ = ("points", "bear_off_left")
 
     def __init__(self, points: Optional[list[Point]] = None, bear_off_left: bool = True):
         self.points: list[Point] = [Point(i) for i in range(26)] if points is None else points
