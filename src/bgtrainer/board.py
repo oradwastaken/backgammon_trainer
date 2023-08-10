@@ -1,6 +1,5 @@
 import json
 import random
-from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
 from typing import NamedTuple, Optional
@@ -31,13 +30,30 @@ class Team(StrEnum):
     O = "O"  # noqa: E741
 
 
-@dataclass(slots=True)
 class Point:
     """Represents a point on the board."""
 
-    number: int
-    num_checkers: int = 0
-    color: Optional[Team] = None
+    __slots__ = ("_number", "num_checkers", "_color")
+
+    def __init__(self, number: int, num_checkers: int = 0, color: Optional[Team] = None):
+        self._number = number
+        self.num_checkers = num_checkers
+        self._color = color
+
+    @property
+    def number(self):
+        """Once a point is set and created, it shouldn't be changeable."""
+        return self._number
+
+    @property
+    def color(self) -> Optional[Team]:
+        if self.num_checkers == 0:
+            return None
+        return self._color
+
+    @color.setter
+    def color(self, color: Optional[Team]) -> None:
+        self._color = color
 
 
 class Board:
@@ -46,6 +62,8 @@ class Board:
 
     The X team represents the user, and the O team represents the opponent.
     """
+
+    __slots__ = ("points", "bear_off_left")
 
     def __init__(self, points: Optional[list[Point]] = None, bear_off_left: bool = True):
         self.points: list[Point] = [Point(i) for i in range(26)] if points is None else points

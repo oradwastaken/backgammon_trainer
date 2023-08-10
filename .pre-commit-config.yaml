@@ -1,0 +1,56 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-added-large-files
+    -   id: check-merge-conflict
+    -   id: debug-statements
+    -   id: name-tests-test
+    -   id: requirements-txt-fixer
+
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+    -   id: python-check-blanket-noqa
+
+-   repo: local
+    hooks:
+    -   id: black
+        name: Reformat text with black
+        entry: black
+        language: system
+        types: [python]
+    -   id: docformatter
+        name: Format docstrings with docformatter
+        entry: docformatter
+        language: system
+        types: [python]
+        args: [--in-place, --recursive, --black]
+    -   id: mypy
+        name: Check Types with Mypy
+        entry: mypy
+        language: system
+        types: [python]
+        args: [--ignore-missing-imports]
+    -   id: ruff
+        name: Lint with Ruff
+        entry: ruff
+        language: system
+        types: [python]
+    -   id: coverage
+        name: Run pytest
+        entry: coverage
+        language: system
+        types: [python]
+        pass_filenames: false
+        args: [run, -m, pytest]
+    -   id: coverage
+        name: Check test coverage
+        entry: coverage
+        language: system
+        types: [python]
+        args: [report]
+        always_run: true
+        verbose: true

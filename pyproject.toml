@@ -18,12 +18,19 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 
+[project.scripts]
+bgtrainer = "bgtrainer.main:main"
 
 [project.urls]
 Repository = "https://github.com/oradwastaken/backgammon_trainer/"
 
-[tool.setuptools]
-packages = ["backgammon"]
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["bgtrainer*"]
+exclude = ["test"]
+
+[tool.setuptools.package-data]
+bgtrainer = ["data/*.txt", "data/*.csv"]
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
@@ -41,3 +48,12 @@ target-version = ['py311']
 
 [tool.refurb]
 ignore = [140]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+    "bgtrainer/__init__.py",
+]
+
+[tool.coverage.report]
+skip_empty = true

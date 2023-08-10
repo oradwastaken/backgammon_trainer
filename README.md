@@ -33,11 +33,11 @@ mamba create -n bgtrainer -c conda-forge "python>=3.10" --file requirements.txt
 pip install --no-build-isolation --no-deps .
 ```
 
-To run, simply activate the appropriate environment and run:
+To run, simply activate the appropriate environment and run `bgtrainer`:
 
  ```
  conda activate bgtrainer
- python main.py
+ bgtrainer
  ```
 
 ### For developers
@@ -51,6 +51,5 @@ mamba install -n bgtrainer --freeze-installed --file requirements-dev.txt
 ## editable install of the package without using pip for dependencies
 pip install --no-build-isolation --no-deps -e .
 
-cat hooks > .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+pre-commit install
 ```

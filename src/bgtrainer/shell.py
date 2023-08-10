@@ -4,8 +4,8 @@ from pathlib import Path
 from time import sleep
 from typing import DefaultDict
 
-from backgammon import colors
-from backgammon.board import Board, Move, PipCount, Team
+from bgtrainer import colors
+from bgtrainer.board import Board, Move, PipCount, Team
 
 logo_file = Path(__file__).parent / "data" / "logo.txt"
 logo = logo_file.read_text()
