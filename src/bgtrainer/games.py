@@ -1,13 +1,14 @@
 import csv
 import random
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter
 from typing import Any, Optional
-from abc import ABC, abstractmethod
 
 from bgtrainer.board import Board, Move
+from bgtrainer.highscores import Score
 from bgtrainer.shell import (
     print_board,
     read_int,
@@ -59,7 +60,7 @@ class Quiz:
         self.total_time = 0
         self.round_num = 0
 
-    def update_score(self, win: bool):
+    def update_points(self, win: bool):
         if win:
             self.num_wins += 1
             print("Right! 😎")
@@ -69,11 +70,11 @@ class Quiz:
                 correct_answers_str = " ".join([str(answer) for answer in self.correct_answers])
                 print(f"The correct answer was {correct_answers_str}")
 
-    def show_score(self):
+    def show_points(self):
         print(f"\nScore: {self.num_wins}/{self.round_num}")
 
     def show_final_score(self):
-        print(f"Final score: {self.num_wins}/{self.total_rounds}!")
+        print(f"Number of points: {self.num_wins}/{self.total_rounds}!")
         print(f"Total time: {self.total_time:.1f} s")
         print(f"Average time: {self.total_time / self.total_rounds:.1f} s/round")
 
@@ -81,6 +82,7 @@ class Quiz:
 class Game(ABC):
     board: Board
     quiz: Quiz
+    score_db: Score
 
     @abstractmethod
     def play(self) -> None:
@@ -94,17 +96,23 @@ class Game(ABC):
     def play_round(self) -> bool:
         raise NotImplementedError
 
+    @abstractmethod
+    def update_score(self) -> None:
+        raise NotImplementedError
+
 
 @dataclass
 class PointNumber(Game):
     board: Board = field(default_factory=Board)
     quiz: Quiz = field(default_factory=Quiz)
+    score_db: Score = field(default_factory=lambda: Score("PointNumber"))
 
     def play(self):
         self.quiz.setup_game()
         for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
             self.play_round()
 
+        self.update_score()
         self.quiz.show_final_score()
 
         play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
@@ -125,20 +133,28 @@ class PointNumber(Game):
         self.quiz.start_clock()
         guess = read_int(prompt)
         self.quiz.stop_clock()
-        self.quiz.update_score(win=guess in self.quiz.correct_answers)
-        self.quiz.show_score()
+        self.quiz.update_points(win=guess in self.quiz.correct_answers)
+        self.quiz.show_points()
+
+    def update_score(self):
+        self.score_db.score = self.quiz.num_wins
+        if self.score_db.score >= self.score_db.high_score():
+            self.score_db.congratulate()
+        self.score_db.save_score()
 
 
 @dataclass
 class OpeningMoves(Game):
     board: Board = field(default_factory=Board)
     quiz: Quiz = field(default_factory=Quiz)
+    score_db: Score = field(default_factory=lambda: Score("OpeningMoves"))
 
     def play(self):
         self.quiz.setup_game()
         for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
             self.play_round()
 
+        self.update_score()
         self.quiz.show_final_score()
 
         play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
@@ -161,14 +177,21 @@ class OpeningMoves(Game):
         guess_moves = read_move(prompt)
         self.quiz.stop_clock()
         print(f"Your move: {' '.join([str(move) for move in guess_moves])}")
-        self.quiz.update_score(win=all(move in self.quiz.correct_answers for move in guess_moves))
-        self.quiz.show_score()
+        self.quiz.update_points(win=all(move in self.quiz.correct_answers for move in guess_moves))
+        self.quiz.show_points()
+
+    def update_score(self):
+        self.score_db.score = self.quiz.num_wins
+        if self.score_db.score >= self.score_db.high_score():
+            self.score_db.congratulate()
+        self.score_db.save_score()
 
 
 @dataclass
 class PipCountGame(Game):
     board: Board = field(default_factory=Board)
     quiz: Quiz = field(default_factory=Quiz)
+    score_db: Score = field(default_factory=lambda: Score("PipCount"))
     show_points: bool = False
 
     def play(self):
@@ -179,6 +202,7 @@ class PipCountGame(Game):
         for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
             self.play_round()
 
+        self.update_score()
         self.quiz.show_final_score()
 
         play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
@@ -198,14 +222,21 @@ class PipCountGame(Game):
         self.quiz.start_clock()
         guess = read_pipcount(prompt)
         self.quiz.stop_clock()
-        self.quiz.update_score(win=guess in self.quiz.correct_answers)
-        self.quiz.show_score()
+        self.quiz.update_points(win=guess in self.quiz.correct_answers)
+        self.quiz.show_points()
+
+    def update_score(self):
+        self.score_db.score = self.quiz.num_wins
+        if self.score_db.score >= self.score_db.high_score():
+            self.score_db.congratulate()
+        self.score_db.save_score()
 
 
 @dataclass
 class RelativePipCount(Game):
     board: Board = field(default_factory=Board)
     quiz: Quiz = field(default_factory=Quiz)
+    score_db: Score = field(default_factory=lambda: Score("RelativePipCount"))
     show_points: bool = False
 
     def play(self):
@@ -216,6 +247,7 @@ class RelativePipCount(Game):
         for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
             self.play_round()
 
+        self.update_score()
         self.quiz.show_final_score()
 
         play_again = read_yesno("\nWould you like to play again? (Y/N)\n")
@@ -235,8 +267,14 @@ class RelativePipCount(Game):
         self.quiz.start_clock()
         guess = read_int(prompt)
         self.quiz.stop_clock()
-        self.quiz.update_score(win=guess in self.quiz.correct_answers)
-        self.quiz.show_score()
+        self.quiz.update_points(win=guess in self.quiz.correct_answers)
+        self.quiz.show_points()
+
+    def update_score(self):
+        self.score_db.score = self.quiz.num_wins
+        if self.score_db.score >= self.score_db.high_score():
+            self.score_db.congratulate()
+        self.score_db.save_score()
 
 
 games = {1: PointNumber, 2: OpeningMoves, 3: PipCountGame, 4: RelativePipCount}

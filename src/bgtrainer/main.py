@@ -1,5 +1,5 @@
 from bgtrainer.board import Board
-from bgtrainer.database import cleanup
+from bgtrainer.database import con
 from bgtrainer.games import games
 from bgtrainer.shell import bear_off_question, select_game, welcome
 
@@ -18,4 +18,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        cleanup()
+        con.close()
