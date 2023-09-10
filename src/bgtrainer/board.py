@@ -106,32 +106,13 @@ class Board:
         self.points[point_num].num_checkers = 1
         self.points[point_num].color = Team.X
 
-    def random_board(self, bar: bool = False) -> None:
-        self.reset()
-        touched_points = []
-
-        for color in (Team.X, Team.O):
-            remaining_checkers = 15
-            while remaining_checkers > 0:
-                if bar:
-                    point_num = random.randint(0, 25)
-                else:
-                    point_num = random.randint(1, 24)
-                if point_num in touched_points:
-                    continue
-                touched_points.append(point_num)
-
-                num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
-                if num_checkers > remaining_checkers:
-                    num_checkers = remaining_checkers
-                remaining_checkers = remaining_checkers - num_checkers
-
-                self.points[point_num].num_checkers = num_checkers
-                self.points[point_num].color = color
-
     @property
     def points_with_checkers(self) -> list[Point]:
         return [point for point in self.points if point.num_checkers > 0]
+
+    @property
+    def num_checkers(self) -> int:
+        return sum(point.num_checkers for point in self.points_with_checkers)
 
     @property
     def pipcount(self) -> PipCount:
@@ -200,3 +181,52 @@ class Board:
     def save(self, filename: str | Path):
         with open(filename, "w") as f:
             json.dump(self.asdict(), f)
+
+
+def random_board(board: Board, bar: bool = False, both_players: bool = False) -> Board:
+    board.reset()
+    touched_points = []
+
+    if both_players:
+        teams = [Team.X, Team.O]
+    else:
+        teams = [Team.X]
+
+    for color in teams:
+        remaining_checkers = 15
+        while remaining_checkers > 0:
+            if bar:
+                point_num = random.randint(0, 25)
+            else:
+                point_num = random.randint(1, 24)
+            if point_num in touched_points:
+                continue
+            touched_points.append(point_num)
+
+            num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
+            if num_checkers > remaining_checkers:
+                num_checkers = remaining_checkers
+            remaining_checkers = remaining_checkers - num_checkers
+
+            board.points[point_num].num_checkers = num_checkers
+            board.points[point_num].color = color
+
+    return board
+
+
+def random_bear_off_position(board: Board) -> Board:
+    board.reset()
+
+    while board.num_checkers < 15:
+        point_num = random.randint(1, 6)
+        num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
+        board.points[point_num].num_checkers = num_checkers
+        board.points[point_num].color = Team.X
+
+    return board
+
+
+def iSight(board: Board) -> int:
+    # count = board.pipcount.X
+
+    return 1

@@ -9,7 +9,7 @@ from typing import Any, Optional
 
 import bgtrainer.colors as c
 import bgtrainer.shell as sh
-from bgtrainer.board import Board, Move
+from bgtrainer.board import Board, Move, iSight, random_bear_off_position, random_board
 from bgtrainer.highscores import Score
 
 
@@ -211,17 +211,64 @@ class PipCountGame(Game):
             self.play()
 
     def setup_board(self):
-        self.board.random_board()
-        self.quiz.correct_answers = [self.board.pipcount]
+        self.board = random_board(self.board)
+        self.quiz.correct_answers = [self.board.pipcount.X]
 
     def play_round(self):
         self.setup_board()
         sh.wait(3)
         sh.print_board(self.board, show_points=self.show_points)
-        prompt = "What are the two pip counts?\n"
-        prompt += "Please provide it in the form: X=167, O=167\n"
+        prompt = "What is the pip count?\n"
         self.quiz.start_clock()
-        guess = sh.read_pipcount(prompt)
+        guess = sh.read_int(prompt)
+        self.quiz.stop_clock()
+
+        correct = guess in self.quiz.correct_answers
+        self.quiz.update_wins(win=correct)
+        self.quiz.points += 1 * correct
+        self.quiz.show_points()
+
+
+@dataclass
+class iSightGame(Game):
+    board: Board = field(default_factory=Board)
+    quiz: Quiz = field(default_factory=Quiz)
+    score_db: Score = field(default_factory=lambda: Score("iSight"))
+    show_points: bool = False
+
+    def __post_init__(self):
+        response = sh.read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
+        self.show_points = response
+
+        self.quiz.total_rounds = 5
+
+    def play(self):
+        self.quiz.setup_game()
+        for self.quiz.round_num in range(1, self.quiz.total_rounds + 1):
+            self.play_round()
+
+        self.score_db.score = self.quiz.points
+
+        if self.score_db.score >= self.score_db.high_score():
+            self.quiz.congratulate()
+        self.score_db.save_score()
+
+        self.quiz.show_final_score()
+        play_again = sh.read_yesno("\nWould you like to play again? (Y/N)\n")
+        if play_again:
+            self.play()
+
+    def setup_board(self):
+        self.board = random_bear_off_position(self.board)
+        self.quiz.correct_answers = [iSight(self.board)]
+
+    def play_round(self):
+        self.setup_board()
+        sh.wait(3)
+        sh.print_board(self.board, show_points=self.show_points)
+        prompt = "What is the iSight adjusted pip count?\n"
+        self.quiz.start_clock()
+        guess = sh.read_int(prompt)
         self.quiz.stop_clock()
 
         correct = guess in self.quiz.correct_answers
@@ -261,7 +308,7 @@ class RelativePipCount(Game):
             self.play()
 
     def setup_board(self):
-        self.board.random_board()
+        self.board = random_board(self.board)
         self.quiz.correct_answers = [self.board.pipcount.X - self.board.pipcount.O]
 
     def play_round(self):
@@ -283,4 +330,4 @@ class RelativePipCount(Game):
         self.quiz.show_points()
 
 
-games = {1: PointNumber, 2: OpeningMoves, 3: PipCountGame, 4: RelativePipCount}
+games = {1: PointNumber, 2: PipCountGame, 3: RelativePipCount, 4: iSightGame}
