@@ -25,6 +25,11 @@ class PipCount(NamedTuple):
     O: int  # noqa: E741
 
 
+class CrossoverCount(NamedTuple):
+    X: int
+    O: int  # noqa: E741
+
+
 class Team(StrEnum):
     X = "X"
     O = "O"  # noqa: E741
@@ -126,6 +131,31 @@ class Board:
             if point.color == Team.O
         )
         return PipCount(X=X_count, O=O_count)
+
+    @property
+    def crossovers(self) -> CrossoverCount:
+        """Calculates and returns the number of crossovers for each player."""
+        num_crossovers_X = 0
+        num_crossovers_O = 0
+
+        for point in self.points_with_checkers:
+            if point.color == Team.X:
+                if point.number >= 19:
+                    num_crossovers_X += 3 * point.num_checkers
+                elif 19 > point.number >= 13:
+                    num_crossovers_X += 2 * point.num_checkers
+                elif 13 > point.number >= 7:
+                    num_crossovers_X += 1 * point.num_checkers
+
+            if point.color == Team.O:
+                if point.number <= 6:
+                    num_crossovers_O += 3 * point.num_checkers
+                elif 6 < point.number <= 12:
+                    num_crossovers_O += 2 * point.num_checkers
+                elif 12 < point.number <= 18:
+                    num_crossovers_O += 1 * point.num_checkers
+
+        return CrossoverCount(X=num_crossovers_X, O=num_crossovers_O)
 
     def move_checkers(self, from_pt_num: int, to_pt_num: int, num_checkers: int = 1) -> None:
         from_pt = self.points[from_pt_num]
