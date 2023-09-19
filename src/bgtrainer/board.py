@@ -244,14 +244,33 @@ def random_board(board: Board, bar: bool = False, both_players: bool = False) ->
     return board
 
 
-def random_bear_off_position(board: Board) -> Board:
+def random_bear_off_position(board: Board, both_players: bool = False) -> Board:
     board.reset()
+    touched_points = []
 
-    while board.num_checkers < 15:
-        point_num = random.randint(1, 6)
-        num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
-        board.points[point_num].num_checkers = num_checkers
-        board.points[point_num].color = Team.X
+    if both_players:
+        teams = [Team.X, Team.O]
+    else:
+        teams = [Team.X]
+
+    for color in teams:
+        remaining_checkers = random.choice([15, 15, 15, 15, 14, 14, 14, 13, 12])
+        while remaining_checkers > 0:
+            if color == Team.X:
+                point_num = random.randint(1, 6)
+            elif color == Team.O:
+                point_num = random.randint(19, 24)
+            if point_num in touched_points:
+                continue
+            touched_points.append(point_num)
+
+            num_checkers = random.choice([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6])
+            if num_checkers > remaining_checkers:
+                num_checkers = remaining_checkers
+
+            board.points[point_num].num_checkers = num_checkers
+            board.points[point_num].color = color
+            remaining_checkers = remaining_checkers - num_checkers
 
     return board
 

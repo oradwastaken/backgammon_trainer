@@ -259,14 +259,14 @@ class iSightGame(Game):
             self.play()
 
     def setup_board(self):
-        self.board = random_bear_off_position(self.board)
+        self.board = random_bear_off_position(self.board, both_players=True)
         self.quiz.correct_answers = [iSight(self.board)]
 
     def play_round(self):
         self.setup_board()
         sh.wait(3)
         sh.print_board(self.board, show_points=self.show_points)
-        prompt = "What is the iSight adjusted pip count?\n"
+        prompt = "What is your iSight adjusted pip count?\n"
         self.quiz.start_clock()
         guess = sh.read_int(prompt)
         self.quiz.stop_clock()
