@@ -83,10 +83,10 @@ def read_pipcount(prompt: str) -> PipCount:
 def select_game() -> int:
     prompt = "\nSelect a game!\n"
     prompt += "1. Point number trainer\n"
-    # prompt += "2. Opening move trainer (broken...)\n"
     prompt += "2. Pip counting trainer\n"
     prompt += "3. Relative pip counting trainer\n"
-    prompt += "4. iSight count trainer\n"
+    # prompt += "4. Opening move trainer (broken...)\n"
+    # prompt += "4. iSight count trainer\n"
     return read_choice(prompt, [1, 2, 3, 4])
 
 
