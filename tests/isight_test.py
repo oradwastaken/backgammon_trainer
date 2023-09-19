@@ -152,3 +152,23 @@ def test_iSight__crossovers(point_num, expected_isight):
     board.points[point_num].num_checkers = 1
     board.points[point_num].color = Team.X
     assert iSight(board) == expected_isight
+
+
+@pytest.mark.parametrize(
+    "point_num_X, point_num_O, expected_isight",
+    [
+        (7, 18, 7),  # 7 pips + 1 crossover - 1 crossover
+        (13, 14, 14),  # 13 pips + 2 crossover - 1 crossover
+        (24, 23, 27),  # 24 pips + 3 crossover - 0 crossovers
+    ],
+)
+def test_iSight__crossover_difference(point_num_X, point_num_O, expected_isight):
+    """Add 1 pip for each additional crossover compared to the opponent."""
+    board = Board()
+    board.points[point_num_X].num_checkers = 1
+    board.points[point_num_X].color = Team.X
+
+    board.points[point_num_O].num_checkers = 1
+    board.points[point_num_O].color = Team.O
+
+    assert iSight(board) == expected_isight

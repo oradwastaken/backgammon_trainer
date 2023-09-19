@@ -1,6 +1,6 @@
 import pytest
 
-from bgtrainer.board import Point, Team
+from bgtrainer.board import Board, Point, Team
 
 
 def test_Point__default_is_empty():
@@ -33,3 +33,35 @@ def test_Point__change_colors():
 
     point.color = Team.O
     assert point.color == Team.O
+
+
+@pytest.mark.parametrize(
+    "point_number, number_crossovers",
+    [
+        (5, 0),
+        (8, 1),
+        (13, 2),
+        (20, 3),
+    ],
+)
+def test_Board__crossovers_X(point_number, number_crossovers):
+    board = Board()
+    board.points[point_number].num_checkers = 1
+    board.points[point_number].color = Team.X
+    assert board.crossovers.X == number_crossovers
+
+
+@pytest.mark.parametrize(
+    "point_number, number_crossovers",
+    [
+        (5, 3),
+        (8, 2),
+        (13, 1),
+        (20, 0),
+    ],
+)
+def test_Board__crossovers_O(point_number, number_crossovers):
+    board = Board()
+    board.points[point_number].num_checkers = 1
+    board.points[point_number].color = Team.O
+    assert board.crossovers.O == number_crossovers
