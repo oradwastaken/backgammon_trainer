@@ -32,9 +32,10 @@ def read_int(prompt: str) -> int:
     while True:
         try:
             output = int(input(prompt).strip().split()[0])
-            return output
         except (ValueError, IndexError):
             print("Please provide a valid integer.")
+        else:
+            return output
 
 
 def read_choice(prompt: str, choices: list[int]) -> int:
@@ -85,8 +86,9 @@ def select_game() -> int:
     prompt += "1. Point number trainer\n"
     prompt += "2. Pip counting trainer\n"
     prompt += "3. Relative pip counting trainer\n"
+    prompt += "4. iSight count trainer\n"
+
     # prompt += "4. Opening move trainer (broken...)\n"
-    # prompt += "4. iSight count trainer\n"
     return read_choice(prompt, [1, 2, 3, 4])
 
 

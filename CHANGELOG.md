@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Created a change log!
-- Added iSight method game, created `iSight()` function and related tests. Still unreleased.
+- Added iSight method game, created `iSight()` function and related tests.
 - Added `crossovers()` method/property and tests to `Board` class.
 
 ### Changed

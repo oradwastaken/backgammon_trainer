@@ -276,6 +276,31 @@ def random_bear_off_position(board: Board, both_players: bool = False) -> Board:
 
 
 def iSight(board: Board) -> int:
-    # count = board.pipcount.X
+    count = board.pipcount.X
 
-    return 1
+    num_X_checkers = sum(
+        point.num_checkers for point in board.points_with_checkers if point.color == Team.X
+    )
+    num_O_checkers = sum(
+        point.num_checkers for point in board.points_with_checkers if point.color == Team.O
+    )
+    count += num_X_checkers - num_O_checkers
+
+    count += 2 * max(board.points[1].num_checkers - 2, 0)
+
+    count += 1 * max(board.points[2].num_checkers - 2, 0)
+
+    count += 1 * max(board.points[3].num_checkers - 3, 0)
+
+    if board.points[4].num_checkers == 0 and board.points[21].num_checkers > 0:
+        count += 1
+
+    if board.points[5].num_checkers == 0 and board.points[20].num_checkers > 0:
+        count += 1
+
+    if board.points[6].num_checkers == 0 and board.points[19].num_checkers > 0:
+        count += 1
+
+    num_X_crossovers, num_O_crossovers = board.crossovers
+    count += num_X_crossovers - num_O_crossovers
+    return count

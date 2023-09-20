@@ -66,8 +66,8 @@ def test_iSight__more_pips_for_more_checkers_point_1(num_checkers, expected_isig
     "num_checkers, expected_isight",
     [
         (2, 4),  # Your pip count is 4, and you add nothing because you just have 2 checkers
-        (3, 8),  # Your pip count is 6, and you add 2 for having 2+1 checkers on point 2
-        (4, 12),  # Your pip count is 8, and you add 4 for having 2+2 checkers on point 2
+        (3, 7),  # Your pip count is 6, and you add 1 for having 2+1 checkers on point 2
+        (4, 10),  # Your pip count is 8, and you add 2 for having 2+2 checkers on point 2
     ],
 )
 def test_iSight__more_pips_for_more_checkers_point_2(num_checkers, expected_isight):
@@ -85,9 +85,9 @@ def test_iSight__more_pips_for_more_checkers_point_2(num_checkers, expected_isig
 @pytest.mark.parametrize(
     "num_checkers, expected_isight",
     [
-        (3, 8),  # Your pip count is 9, and you add nothing because you just have 3 checkers
-        (4, 12),  # Your pip count is 12, and you add 1 for having 3+1 checkers on point 2
-        (5, 4),  # Your pip count is 15, and you add 2 for having 3+1 checkers on point 2
+        (3, 9),  # Your pip count is 9, and you add nothing because you just have 3 checkers
+        (4, 13),  # Your pip count is 12, and you add 1 for having 3+1 checkers on point 3
+        (5, 17),  # Your pip count is 15, and you add 2 for having 3+2 checkers on point 3
     ],
 )
 def test_iSight__more_pips_for_more_checkers_point_3(num_checkers, expected_isight):
@@ -105,15 +105,18 @@ def test_iSight__more_pips_for_more_checkers_point_3(num_checkers, expected_isig
 @pytest.mark.parametrize(
     "point_num, expected_isight",
     [
-        (4, 1),  # add 1
-        (5, 1),  # add 1
-        (6, 1),  # add 1
+        (4, 2),  # pipcount is 1, same number of checkers, add 1 for the gap
+        (5, 2),  # pipcount is 1, add 1
+        (6, 2),  # pipcount is 1, add 1
     ],
 )
 def test_iSight__more_pips_for_gaps(point_num, expected_isight):
     """Add 1 pip for each empty space on points 4, 5, or 6 (only if the other player has
     a checker on his corresponding point);"""
     board = Board()
+    board.points[1].num_checkers = 1
+    board.points[1].color = Team.X
+
     board.points[25 - point_num].num_checkers = 1
     board.points[25 - point_num].color = Team.O
     assert iSight(board) == expected_isight
@@ -141,9 +144,9 @@ def test_iSight__no_pips_for_no_gaps(point_num, expected_isight):
 @pytest.mark.parametrize(
     "point_num, expected_isight",
     [
-        (7, 11),  # 4 pips + 1 crossover
-        (13, 18),  # 13 pips + 2 crossovers
-        (24, 27),  # 24 pips + 3 crossovers
+        (7, 8),  # 7 pips + 1 crossover
+        (13, 15),  # 13 pips + 2 crossovers
+        (23, 26),  # 23 pips + 3 crossovers
     ],
 )
 def test_iSight__crossovers(point_num, expected_isight):
@@ -151,6 +154,10 @@ def test_iSight__crossovers(point_num, expected_isight):
     board = Board()
     board.points[point_num].num_checkers = 1
     board.points[point_num].color = Team.X
+
+    board.points[24].num_checkers = 1
+    board.points[24].color = Team.O
+
     assert iSight(board) == expected_isight
 
 
