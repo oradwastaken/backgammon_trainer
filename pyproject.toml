@@ -19,7 +19,7 @@ dynamic = ["dependencies", "optional-dependencies"]
 
 
 [project.scripts]
-bgtrainer = "bgtrainer.main:main"
+bgtrainer = "bgtrainer.bgtrainer:main"
 
 [project.urls]
 Repository = "https://github.com/oradwastaken/backgammon_trainer/"
