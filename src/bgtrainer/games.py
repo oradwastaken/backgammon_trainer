@@ -308,7 +308,7 @@ class RelativePipCount(Game):
             self.play()
 
     def setup_board(self):
-        self.board = random_board(self.board)
+        self.board = random_board(self.board, both_players=True)
         self.quiz.correct_answers = [self.board.pipcount.X - self.board.pipcount.O]
 
     def play_round(self):

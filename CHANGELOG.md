@@ -13,7 +13,8 @@ All notable changes to this project will be documented in this file.
 - Colors disabled for windows.
 
 ### Fixed
-- Explicitly read files with `utf-8` encoding
+- Explicitly read files with `utf-8` encoding so that Windows users can actually see the board
+- Fixed "Relative Pip Count trainer" so that you can see both players' checkers
 
 ## [0.0.1] - 2024-09-19
 
