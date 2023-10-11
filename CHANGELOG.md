@@ -3,9 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+
+### Added
+
+- Build action to create portable binaries for windows, macOS and ubuntu.
+
 ### Changed
 
-- Colors disabled for windows
+- Colors disabled for windows.
 
 ### Fixed
 - Explicitly read files with `utf-8` encoding
