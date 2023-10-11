@@ -2,7 +2,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [[0.0.2]](https://github.com/oradwastaken/backgammon_trainer/releases/tag/v0.0.2) - 2023-10-10
 
 ### Added
 
@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 - Explicitly read files with `utf-8` encoding so that Windows users can actually see the board
 - Fixed "Relative Pip Count trainer" so that you can see both players' checkers
 
-## [0.0.1] - 2024-09-19
+## [[0.0.1]](https://github.com/oradwastaken/backgammon_trainer/releases/tag/v0.0.1) - 2023-09-19
 
 ### Added
 

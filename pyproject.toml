@@ -1,6 +1,6 @@
 [project]
 name = "bgtrainer"
-version = '0.0.1'
+version = '0.0.2'
 description = "A fast portable backgammon trainer"
 readme = "README.md"
 authors = [{ name = "Orad Reshef", email = "oradwastaken@gmail.com" }]
