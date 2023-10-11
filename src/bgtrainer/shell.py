@@ -8,13 +8,13 @@ from bgtrainer import colors
 from bgtrainer.board import Board, Move, PipCount, Team
 
 logo_file = Path(__file__).parent / "data" / "logo.txt"
-logo = logo_file.read_text()
+logo = logo_file.read_text(encoding="utf-8")
 
 board_left_file = Path(__file__).parent / "data" / "board_left.txt"
-board_left = board_left_file.read_text()
+board_left = board_left_file.read_text(encoding="utf-8")
 
 board_right_file = Path(__file__).parent / "data" / "board_right.txt"
-board_right = board_right_file.read_text()
+board_right = board_right_file.read_text(encoding="utf-8")
 
 
 def clear_lines(n: int = 1) -> None:
