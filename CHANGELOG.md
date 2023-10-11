@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Colors disabled for windows.
+- Removed the "Opening Replies" trainer for now, since it doesn't seem to be working properly.
+- Updated out-of-date documentation.
 
 ### Fixed
 - Explicitly read files with `utf-8` encoding so that Windows users can actually see the board
