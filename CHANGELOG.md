@@ -2,10 +2,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [[0.0.3]](https://github.com/oradwastaken/backgammon_trainer/releases/tag/v0.0.3) - 2023-10-17
 
 ### Fixed
 - Made binaries executable by default (added `chmod +x` to build process).
+
+### Changed
+- For some games, game scores will now give you points if you are close
 
 
 ## [[0.0.2]](https://github.com/oradwastaken/backgammon_trainer/releases/tag/v0.0.2) - 2023-10-10

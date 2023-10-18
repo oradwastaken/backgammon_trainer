@@ -32,7 +32,7 @@ Perfect your bear-off cubing skills!!!!
 
 ## Installation
 
-Download the [latest release](/releases/latest) for your platform.
+Download the [latest release](https://github.com/oradwastaken/backgammon_trainer/releases/latest) for your platform.
 
 ### For developers
 
