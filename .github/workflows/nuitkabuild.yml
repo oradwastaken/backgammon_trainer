@@ -54,6 +54,7 @@ jobs:
           output-file: bgtrainer_${{ matrix.os }}
 
       - name: Make binary executable
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: chmod +x src/build/bgtrainer_*
 
       - name: Build python script into a directory (Windows)
