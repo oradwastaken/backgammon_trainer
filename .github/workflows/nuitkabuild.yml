@@ -55,7 +55,7 @@ jobs:
 
       - name: Make binary executable
         if: ${{ !startsWith(matrix.os, 'windows') }}
-        run: chmod +x src/build/bgtrainer_*
+        run: chmod +x ./src/build/bgtrainer_*
 
       - name: Build python script into a directory (Windows)
         if: startsWith(matrix.os, 'windows')
