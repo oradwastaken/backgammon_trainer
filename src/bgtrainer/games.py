@@ -131,7 +131,7 @@ class PointNumber(Game):
 
         correct = guess in self.quiz.correct_answers
         self.quiz.update_wins(win=correct)
-        self.quiz.points += max(5 - self.quiz.round_time, 0) * correct
+        self.quiz.points += max(5 - self.quiz.round_time, 1) * correct
         self.quiz.show_points()
 
 
@@ -192,7 +192,7 @@ class PipCountGame(Game):
         response = sh.read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
         self.show_points = response
 
-        self.quiz.total_rounds = 5
+        self.quiz.total_rounds = 3
 
     def play(self):
         self.quiz.setup_game()
@@ -224,8 +224,14 @@ class PipCountGame(Game):
         self.quiz.stop_clock()
 
         correct = guess in self.quiz.correct_answers
+        close_pips = 5
+        close = abs(guess - self.quiz.correct_answers[0]) <= close_pips
         self.quiz.update_wins(win=correct)
-        self.quiz.points += 1 * correct
+
+        pip_difference = abs(guess - self.quiz.correct_answers[0])
+        points = max(1, (close_pips - pip_difference)) * (2 * correct + close)
+        self.quiz.points += max(1, (45 - self.quiz.round_time) / 2.5) * points
+
         self.quiz.show_points()
 
 
@@ -272,8 +278,15 @@ class iSightGame(Game):
         self.quiz.stop_clock()
 
         correct = guess in self.quiz.correct_answers
+        close_pips = 2
+        close = abs(guess - self.quiz.correct_answers[0]) <= close_pips
+
         self.quiz.update_wins(win=correct)
-        self.quiz.points += 1 * correct
+
+        pip_difference = abs(guess - self.quiz.correct_answers[0])
+        points = max(1, (close_pips - pip_difference)) * (2 * correct + close)
+        self.quiz.points += max(1, (30 - self.quiz.round_time) / 2.5) * points
+
         self.quiz.show_points()
 
 
@@ -288,7 +301,7 @@ class RelativePipCount(Game):
         response = sh.read_yesno("\nWould you like to see the point numbers? (Y/N)\n")
         self.show_points = response
 
-        self.quiz.total_rounds = 5
+        self.quiz.total_rounds = 3
 
     def play(self):
         self.quiz.setup_game()
@@ -322,11 +335,13 @@ class RelativePipCount(Game):
         self.quiz.stop_clock()
 
         correct = guess in self.quiz.correct_answers
+        close_pips = 5
+        close = abs(guess - self.quiz.correct_answers[0]) <= close_pips
         self.quiz.update_wins(win=correct)
 
         pip_difference = abs(guess - self.quiz.correct_answers[0])
-        points = max(0, 2 * (5 - pip_difference))
-        self.quiz.points += points
+        points = max(1, (close_pips - pip_difference)) * (2 * correct + close)
+        self.quiz.points += max(1, (30 - self.quiz.round_time) / 2.5) * points
         self.quiz.show_points()
 
 
